@@ -26,14 +26,14 @@ namespace DatingApp.API.Controllers
 
         }
 
-        [Authorize]
-        [HttpGet("users")]
-        public async Task<IActionResult> GetUsers()
-        {
-           var values = await _repo.GetUsers();
-           return Ok(values);
+        // [Authorize]
+        // [HttpGet("users")]
+        // public async Task<IActionResult> GetUsers()
+        // {
+        //    var values = await _repo.GetUsers();
+        //    return Ok(values);
            
-        }
+        // }
 
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody]UserForRegister UserForRegister)

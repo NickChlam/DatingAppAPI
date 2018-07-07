@@ -14,11 +14,11 @@ namespace DatingApp.API.Data
             _context = context;
         }
 
-        public async Task<User[]> GetUsers()
-        {
-            var Users = await _context.Users.ToArrayAsync();
-            return Users;
-        }
+        // public async Task<User[]> GetUsers()
+        // {
+        //     var Users = await _context.Users.ToArrayAsync();
+        //     return Users;
+        // }
         public async Task<User> Login(string username, string password)
         {
             var user = await _context.Users.FirstOrDefaultAsync(x => x.UserName == username);
