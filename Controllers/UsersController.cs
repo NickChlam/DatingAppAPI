@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
 using DatingApp.API.Dtos;
@@ -29,6 +31,7 @@ namespace DatingApp.API.Data
             return Ok(usersToReturn);
         }
 
+        
         [HttpGet("{id}")]
         public async Task<IActionResult> GetUser(int Id)
         {
@@ -36,6 +39,33 @@ namespace DatingApp.API.Data
             //map UserForDetailedDto to User 
             var userToReturn = _mapper.Map<UserForDetailedDto>(user);
             return Ok(userToReturn);
+        }
+
+        // api/users/1
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateUser(int id, [FromBody] UserForUpdateDto userForUpdateDto)
+        {
+            if(!ModelState.IsValid){
+                return BadRequest(ModelState);
+            }
+            // get value of user that sent request from the claimTypes
+            var currentUserId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
+            // get the user 
+            var userFromRepo = await _repo.GetUser(id);
+            // check to see if user is there 
+            if(userFromRepo == null)
+                return NotFound($"User not found with ID of {id}");
+            // check if it is the same user 
+            if(currentUserId != userFromRepo.Id)
+                return Unauthorized();
+
+            // take userforupdatedto map it into userfromrepo 
+            _mapper.Map(userForUpdateDto, userFromRepo);
+
+            if(await _repo.SaveAll())
+                return NoContent();
+
+            throw new Exception($"Updating user {id} failed to save");
         }
     }
 }

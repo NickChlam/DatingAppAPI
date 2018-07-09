@@ -36,7 +36,7 @@ namespace DatingApp.API.Data
 
         public async Task<bool> SaveAll()
         {
-            return await _context.SaveChangesAsync() > 0;
+            return await _context.SaveChangesAsync() > 0 ;
         }
     }
     //now add t startup class to make injectable for controller in startup.cs

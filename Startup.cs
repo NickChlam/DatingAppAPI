@@ -92,7 +92,7 @@ namespace DatingApp.API
 
             }
             //add to seed data from Seeds.cs
-            //seeder.seedUsers();
+           // seeder.seedUsers();
             app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin().AllowCredentials());
             app.UseHttpsRedirection();
             app.UseAuthentication();

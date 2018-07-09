@@ -23,7 +23,7 @@ namespace DatingApp.API.Data
 
             // seed users
 
-            var userData = System.IO.File.ReadAllText("Data/generated.json");
+            var userData = System.IO.File.ReadAllText("Data/male.json");
             var users = JsonConvert.DeserializeObject<List<User>>(userData);
             foreach(var user in users)
             {
