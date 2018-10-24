@@ -39,7 +39,8 @@ namespace DatingApp.API
             var key = Encoding.ASCII.GetBytes(Configuration.GetSection("AppSettings:Token").Value);
             services.AddDbContext<DataContext>(x => x.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")) );
             services.AddTransient<Seeds>();
-            services.AddCors();
+            services.AddCors(); 
+            services.Configure<CloudinarySettings>(Configuration.GetSection("CloudinarySettings"));
             services.AddAutoMapper();
             //make repository for application on each instance created 
             services.AddScoped<IAuthRepository, AuthRepository>();
