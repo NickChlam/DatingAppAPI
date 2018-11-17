@@ -4,11 +4,13 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
 using DatingApp.API.Dtos;
+using DatingApp.API.Helpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DatingApp.API.Data
 {
+    [ServiceFilter(typeof(LogUserActivity))]
     [Authorize]
     [Route("api/[controller]")]
     public class UsersController : Controller
@@ -23,11 +25,17 @@ namespace DatingApp.API.Data
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetUsers()
+        public async Task<IActionResult> GetUsers([FromQuery]UserParams userParams)
         {
-            var users = await _repo.GetUsers();
+            var users = await _repo.GetUsers(userParams);
             //map UserForListDto to users that we brought in from GetUsers()
             var usersToReturn = _mapper.Map<IEnumerable<UserForListDto>>(users);
+
+            // we have access to the response 
+
+            Response.AddPagination(users.CurrentPage, userParams.PageSize, users.TotalCount, users.TotalPages);
+
+
             return Ok(usersToReturn);
         }
 
